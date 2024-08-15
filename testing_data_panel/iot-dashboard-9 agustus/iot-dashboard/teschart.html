@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Chart.js example</title>
+  </head>
+  <body>
+    <!-- <div style="width: 500px;"><canvas id="dimensions"></canvas></div><br/> -->
+    <div style="width: 800px;"><canvas id="currentChart"></canvas></div>
+
+    <!-- <script type="module" src="dimensions.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script>
+      let datasets = [
+        { label: 'Tegangan', data: [], borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.2)', fill: true },
+        { label: 'Tegangan S', data: [], borderColor: 'rgba(192, 75, 192, 1)', backgroundColor: 'rgba(192, 75, 192, 0.2)', fill: true },
+        { label: 'Tegangan T', data: [], borderColor: 'rgba(192, 192, 75, 1)', backgroundColor: 'rgba(192, 192, 75, 0.2)', fill: true }
+      ];
+      const ctx = document.getElementById('currentChart').getContext('2d');
+      let currentChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          datasets: datasets
+        },
+        options: {
+          scales: {
+            x: { 
+              type: 'time', 
+              time: { unit: 'minute' },
+              title: { display: true, text: 'Time' }
+            },
+            y: { 
+              beginAtZero: true
+            }
+          },
+          plugins: {
+            legend: {
+              display: true,
+              onClick: (e, legendItem, legend) => {
+                const index = legendItem.datasetIndex;
+                const meta = legend.chart.getDatasetMeta(index);
+                meta.hidden = !meta.hidden;
+                legend.chart.update();
+              }
+            }
+          }
+        }
+      });
+      datasets[0].data.push({ x: '2024-08-08T20:15:00', y: 10 });
+      datasets[0].data.push({ x: '2024-08-08T20:16:00', y: 15 });
+      datasets[0].data.push({ x: '2024-08-08T20:17:00', y: 20 });
+      datasets[0].data.push({ x: '2024-08-08T20:18:00', y: 100 });
+      datasets[1].data.push({ x: '2024-08-08T20:15:00', y: 5 });
+      datasets[1].data.push({ x: '2024-08-08T20:16:00', y: 8 });
+      datasets[1].data.push({ x: '2024-08-08T20:17:00', y: 11 });
+      datasets[1].data.push({ x: '2024-08-08T20:18:00', y: 14 });
+      datasets[2].data.push({ x: '2024-08-08T20:15:00', y: 30 });
+      datasets[2].data.push({ x: '2024-08-08T20:16:00', y: 35 });
+      datasets[2].data.push({ x: '2024-08-08T20:17:00', y: 40 });
+      datasets[2].data.push({ x: '2024-08-08T20:18:00', y: 45 });
+      currentChart.update();
+    </script>
+  </body>
+</html>
