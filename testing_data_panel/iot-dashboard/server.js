@@ -163,7 +163,7 @@
     sendhistoryProteksiData();
     sendhistoryStatusListrikData();
     senddata15menit();
-
+ 
     socket.on('requesthistorySmarthomeData', sendhistorySmarthomeData);
     socket.on('requesthistoryProteksiData', sendhistoryProteksiData);
     socket.on('requesthistoryStatusListrikData', sendhistoryStatusListrikData);
