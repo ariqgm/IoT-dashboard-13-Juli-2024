@@ -13,7 +13,7 @@
 
   // Menggunakan express untuk menyajikan file statis dari direktori 'public'
   app.use(express.static(path.join(__dirname, 'public')));
-
+ 
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
   });
@@ -40,7 +40,7 @@
   let lampStatus = false;
 
   // Konfigurasi MQTT
-  const mqttClient = mqtt.connect('mqtt://192.168.157.106:1883', {
+  const mqttClient = mqtt.connect('mqtt://192.168.75.106:1883', {
     username: 'ariq',
     password: '1234'
   });

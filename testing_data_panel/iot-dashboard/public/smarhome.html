@@ -69,12 +69,12 @@
       justify-content: space-around;
     }
     .table-responsive {
-      max-height: 400px; /* Set the height as per your need */
+      max-height: 400px;
       overflow-y: scroll;
     }
     .table th, .table td {
       color: #405D72;
-      text-align: center; /* Ensure all text is centered */
+      text-align: center;
     }
     .table thead th {
       background-color: #758694;
@@ -88,10 +88,10 @@
       background-color: #FFF8F3;
     }
     .status-unlock {
-      background-color: #4CAF50; /* Green */
+      background-color: #4CAF50;
     }
     .status-lock {
-      background-color: #F44336; /* Red */
+      background-color: #F44336;
     }
   </style>
 </head>
@@ -265,7 +265,7 @@
       console.log('Setting Dimmer:', value);
       socket.emit('control', { device: 'dimmer', value: value });
       document.getElementById('dimmerStatus').innerText = value;
-      lastDimmerValue = value; // Update local lastDimmerValue when dimmer is changed
+      lastDimmerValue = value;
     }
 
     function updateButtonState(buttonId, status) {
@@ -322,7 +322,7 @@
       data.forEach(row => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${row.timestamp}</td>
+          <td>${convertToLocalTime(row.timestamp)}</td>
           <td>${row.bedroom_door}</td>
           <td>${row.main_room_door}</td>
           <td>${row.lamp_bedroom}</td>
@@ -334,10 +334,44 @@
       });
     });
 
+    // Fungsi untuk mengonversi UTC ke waktu lokal (WIB)
+    function convertToLocalTime(utcTime) {
+      const date = new Date(utcTime);
+      const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'Asia/Jakarta',
+      };
+
+      // Mengonversi waktu ke WIB
+      const formattedDate = date.toLocaleString('id-ID', options);
+      
+      // Mendapatkan milidetik secara manual
+      const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
+
+      // Menggabungkan hasil dengan milidetik
+      return `${formattedDate}:${milliseconds}`;
+}
+
     // Fetch history data periodically
     setInterval(() => {
       socket.emit('requesthistorySmarthomeData');
     }, 5000); // every 5 seconds
+
+    // Fungsi baru untuk log waktu sesuai dengan UTC+7 (WIB)
+    const logDateNow = () => {
+      const date = new Date();
+      const utcOffset = 7 * 60 * 60 * 1000; // UTC+7 (WIB)
+      const indonesiaTime = new Date(date.getTime() + utcOffset);
+      console.log("Current Date and Time (WIB):", indonesiaTime.toISOString().replace("T", " ").split(".")[0]);
+    };
+
+    // Memanggil fungsi log date secara berkala
+    setInterval(logDateNow, 1000); // Setiap 1 detik
   </script>
 </body>
 </html>

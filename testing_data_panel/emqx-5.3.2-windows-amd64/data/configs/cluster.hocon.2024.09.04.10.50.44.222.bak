@@ -8,6 +8,5 @@ authentication = [
 ]
 topic_metrics = [
   {topic = proteksi_digital},
-  {topic = "Status_Daya_Beban_Listrik/part4"},
-  {topic = "home/status"}
+  {topic = "Status_Daya_Beban_Listrik/part4"}
 ]

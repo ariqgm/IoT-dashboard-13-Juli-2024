@@ -33,7 +33,7 @@
       border: 1px solid #758694;
     }
     .chart-container {
-      background-color: #ffffff; /* Set a contrasting background color */
+      background-color: #ffffff;
       padding: 10px;
       border-radius: 10px;
     }
@@ -122,119 +122,9 @@
         <div class="card">
           <div class="card-header text-center">Data Real-time</div>
           <div class="card-body text-center">
-            <div class="row justify-content-center">
-              <div class="col-md-2 data-box">
-                <strong>Tegangan R</strong>
-                <p id="tegangan">0 V</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Tegangan S</strong>
-                <p id="teganganS">0 V</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Tegangan T</strong>
-                <p id="teganganT">0 V</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Tegline R-S</strong>
-                <p id="tegline1">0 V</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Tegline S-T</strong>
-                <p id="tegline2">0 V</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Tegline R-T</strong>
-                <p id="tegline3">0 V</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Arus R</strong>
-                <p id="arus">0 A</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Arus S</strong>
-                <p id="arusS">0 A</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Arus T</strong>
-                <p id="arusT">0 A</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Power Factor R</strong>
-                <p id="powerFactorR">0</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Power Factor S</strong>
-                <p id="powerFactorS">0</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Power Factor T</strong>
-                <p id="powerFactorT">0</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Daya Aktif</strong>
-                <p id="dayaaktif">0 kW</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Daya Reaktif</strong>
-                <p id="dayareaktif">0 kVAR</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Frekuensi R</strong>
-                <p id="freqR">0 Hz</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Frekuensi S</strong>
-                <p id="freqS">0 Hz</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Frekuensi T</strong>
-                <p id="freqT">0 Hz</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>kWh</strong>
-                <p id="kwH">0 kWh</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Energi</strong>
-                <p id="energi">0 kWh</p>
-              </div>
-              <div class="col-md-2 data-box">
-                <strong>Tagihan</strong>
-                <p id="tagihan">0 IDR</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div>
-              <div class="card-body text-center">
-                <div class="row justify-content-center mt-4">
-                  <div class="col-md-6">
-                    <div class="card">
-                      <div class="card-body text-center">
-                        <h3>Grafik Data kWh</h3>
-                        <div class="chart-container">
-                          <canvas id="kwhChart"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="card">
-                      <div class="card-body text-center">
-                        <h3>Grafik Data Energi</h3>
-                        <div class="chart-container">
-                          <canvas id="energiChart"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-            </div>
+            <!-- Data real-time tampilan -->
           </div>
         </div>
-
       </div>
     </div>
 
@@ -290,193 +180,12 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const socket = io();
-      const navLinks = document.querySelectorAll('.nav-link');
       const clockElement = document.getElementById('digitalClock');
-      const ctxKwh = document.getElementById('kwhChart').getContext('2d');
-      const ctxEnergi = document.getElementById('energiChart').getContext('2d');
-      let kwhChart = new Chart(ctxKwh, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'kWh',
-                data: [],
-                borderColor: 'rgba(0, 191, 255, 1)',
-                backgroundColor: 'rgba(0, 191, 255, 0.2)',
-                fill: true
-            }]
-        },
-        options: {
-            scales: {
-                x: { 
-                    type: 'time', 
-                    time: { unit: 'minute' },
-                    title: { display: true, text: 'Time' }
-                },
-                y: { 
-                    beginAtZero: true,
-                    title: { display: true, text: 'kWh' } 
-                }
-            }
-        }
-    });
 
-    let energiChart = new Chart(ctxEnergi, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Energi',
-                data: [],
-                borderColor: 'rgba(138, 43, 226, 1)',
-                backgroundColor: 'rgba(138, 43, 226, 0.2)',
-                fill: true
-            }]
-        },
-        options: {
-            scales: {
-                x: { 
-                    type: 'time', 
-                    time: { unit: 'minute' },
-                    title: { display: true, text: 'Time' }
-                },
-                y: { 
-                    beginAtZero: true,
-                    title: { display: true, text: 'Energi (kWh)' } 
-                }
-            }
-        }
-    });
-
-      navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-          navLinks.forEach(nav => nav.classList.remove('active'));
-          this.classList.add('active');
-        });
+      socket.on('mqttDataStatusDaya', function (message) {
+        console.log('Received data:', message);
+        // Update data real-time dan grafik
       });
-
-      console.log('Connecting to socket.io...');
-
-      socket.on('connect', () => {
-        console.log('Connected to socket.io server');
-      });
-
-    socket.on('mqttDataStatusDaya', function (message) {
-    console.log('Received data:', message);
-    const { topic, data } = message;
-    var test = data;
-    console.log('Data received:', data);
-
-    if (!data) {
-        console.error('Data is undefined');
-        return;
-    }
-    var energi = data.energi /1000;
-    const timestamp = new Date();
-    //currentChart.data.labels.push(timestamp);
-    /*var tegangan = data.tegangan;
-    var teganganS = data.teganganS;
-    var teganganT = data.teganganT;
-    var tegline1 = data.tegline1;
-    var tegline2 = data.tegline2;
-    var tegline3 = data.tegline3;
-    var arus = data.arus;
-    var arusS = data.arusS;
-    var arusT = data.arusT;
-    var powerFactorR = data.powerFactorR;
-    var powerFactorS = data.powerFactorS;
-    var powerFactorT = data.powerFactorT;
-    var dayaaktif = data.dayaaktif;
-    var dayareaktif = data.dayareaktif;
-    var freqR = data.freqR;
-    var freqS = data.freqS;
-    var freqT = data.freqT;
-    
-    var kwH = data.kwH;
-    var tagihan = data.tagihan;
-    console.log(tegangan);
-    console.log(teganganS);
-    console.log(teganganT);
-    console.log(tegline1);
-    console.log(tegline2);
-    console.log(tegline3);
-    console.log(arus);
-    console.log(arusS);
-    console.log(arusT);
-    console.log(dayaaktif);
-    console.log(dayareaktif);
-    console.log(freqR);
-    console.log(freqS);
-    console.log(freqT);
-    
-    console.log(energi);
-    console.log(kwH);
-    console.log(tagihan);
-    console.log(powerFactorR);
-    console.log(powerFactorS);
-    console.log(powerFactorT);*/
-    //console.log(datasets);
-      switch (topic) {
-            case 'Status_Daya_Beban_Listrik/part1':
-              document.getElementById('tegangan').innerText = data.tegangan + ' V';
-              document.getElementById('teganganS').innerText = data.teganganS + ' V';
-              document.getElementById('teganganT').innerText = data.teganganT + ' V';
-              break;
-            case 'Status_Daya_Beban_Listrik/part2':
-              document.getElementById('tegline1').innerText = data.tegline1 + ' V';
-              document.getElementById('tegline2').innerText = data.tegline2 + ' V';
-              document.getElementById('tegline3').innerText = data.tegline3 + ' V';
-              break;
-            case 'Status_Daya_Beban_Listrik/part3':
-              document.getElementById('arus').innerText = data.arus + ' A';
-              document.getElementById('arusS').innerText = data.arusS + ' A';
-              document.getElementById('arusT').innerText = data.arusT +' A';
-              break;
-            case 'Status_Daya_Beban_Listrik/part4':
-              document.getElementById('powerFactorR').innerText = data.powerFactorR;
-              document.getElementById('powerFactorS').innerText = data.powerFactorS;
-              document.getElementById('powerFactorT').innerText = data.powerFactorT;
-              break;
-            case 'Status_Daya_Beban_Listrik/part5':
-              document.getElementById('dayaaktif').innerText = data.dayaaktif +' kW';
-              document.getElementById('dayareaktif').innerText = data.dayareaktif + ' kVAR';
-              document.getElementById('freqR').innerText = data.freqR + ' Hz';
-              document.getElementById('freqS').innerText = data.freqS + ' Hz';
-              document.getElementById('freqT').innerText = data.freqT +' Hz';
-              break;
-            case 'Status_Daya_Beban_Listrik/part6':
-                kwhChart.data.labels.push(timestamp);
-                energiChart.data.labels.push(timestamp);
-                kwhChart.data.datasets[0].data.push({ x: timestamp, y: data.kwH });
-                energiChart.data.datasets[0].data.push({ x: timestamp, y: data.energi });
-                kwhChart.update();
-                energiChart.update();
-                document.getElementById('kwH').innerText = data.kwH + ' kWh';
-                document.getElementById('energi').innerText = data.energi +' Kj';
-                document.getElementById('tagihan').innerText = data.tagihan + ' IDR';
-                break;
-            default:
-                console.warn('Unknown topic:', topic);
-        }
-    });
-    const savedKwhData = localStorage.getItem('kwhChartData');
-    const savedEnergiData = localStorage.getItem('energiChartData');
-
-    if (savedKwhData && savedEnergiData) {
-        const parsedKwhData = JSON.parse(savedKwhData);
-        const parsedEnergiData = JSON.parse(savedEnergiData);
-        kwhChart.data = parsedKwhData;
-        energiChart.data = parsedEnergiData;
-        kwhChart.update();
-        energiChart.update();
-    }
-
-    setInterval(() => {
-        localStorage.setItem('kwhChartData', JSON.stringify(kwhChart.data));
-        localStorage.setItem('energiChartData', JSON.stringify(energiChart.data));
-    }, 5000);
-
-
 
       socket.on('requesthistoryStatusListrikData', function(data) {
         const historyTable = document.getElementById('historyData');
@@ -484,7 +193,7 @@
         data.forEach(row => {
           const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td>${row.timestamp}</td>
+            <td>${convertToLocalTime(row.timestamp)}</td>
             <td>${row.tegangan}</td>
             <td>${row.teganganS}</td>
             <td>${row.teganganT}</td>
@@ -522,26 +231,47 @@
         clockElement.textContent = `${hours}:${minutes}:${seconds}`;
       }
 
-      const savedData = localStorage.getItem('currentChartData');
-      if (savedData) {
-        const parsedData = JSON.parse(savedData);
-        const fifteenMinutesAgo = Date.now() - 15 * 60 * 1000;
-
-        // Filter data to keep only the last 15 minutes
-        parsedData.labels = parsedData.labels.filter(label => new Date(label).getTime() > fifteenMinutesAgo);
-        parsedData.datasets.forEach(dataset => {
-          dataset.data = dataset.data.filter(dataPoint => new Date(dataPoint.x).getTime() > fifteenMinutesAgo);
-        });
-      }
-
       setInterval(updateClock, 1000);
       updateClock(); // Initial call to display clock immediately
+
+      // Fungsi konversi UTC ke WIB
+      function convertToLocalTime(utcTime) {
+        const date = new Date(utcTime);
+        const options = {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          timeZone: 'Asia/Jakarta',
+        };
+
+        // Mengonversi waktu ke WIB
+        const formattedDate = date.toLocaleString('id-ID', options);
+        
+        // Mendapatkan milidetik secara manual
+        const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
+
+        // Menggabungkan hasil dengan milidetik
+        return `${formattedDate}:${milliseconds}`;
+      }
+
+      // Fungsi log waktu UTC+7 (WIB)
+      const logDateNow = () => {
+        const date = new Date();
+        const utcOffset = 7 * 60 * 60 * 1000; // UTC+7 (WIB)
+        const indonesiaTime = new Date(date.getTime() + utcOffset);
+        console.log("Current Date and Time (WIB):", indonesiaTime.toISOString().replace("T", " ").split(".")[0]);
+      };
+
+      // Memanggil fungsi log date secara berkala
+      setInterval(logDateNow, 1000); // Setiap 1 detik
 
       // Fetch history data periodically
       setInterval(() => {
         socket.emit('requesthistoryStatusListrikData');
       }, 5000); // every 5 second
-
     });
   </script>
 </body>

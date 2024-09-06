@@ -118,6 +118,15 @@
             downloadLink.click();
             document.body.removeChild(downloadLink);
           }
+          
+          // Fungsi baru untuk log waktu sesuai dengan UTC+7 (WIB)
+          const logDateNow = () => {
+            const date = new Date();
+            const utcOffset = 7 * 60 * 60 * 1000; // UTC+7 (WIB)
+            const indonesiaTime = new Date(date.getTime() + utcOffset);
+            console.log("Current Date and Time (WIB):", indonesiaTime.toISOString().replace("T", " ").split(".")[0]);
+          };
+
         </script>
       </head>
 <body>
@@ -366,7 +375,8 @@
       setInterval(updateClock, 1000);
       updateClock(); // Initial call to display clock immediately
 
-      // Load data from localStorage
+      // Log UTC+7 time setiap 1 detik
+      setInterval(logDateNow, 1000); // Setiap 1 detik
 
       // Fetch history data periodically
       setInterval(() => {

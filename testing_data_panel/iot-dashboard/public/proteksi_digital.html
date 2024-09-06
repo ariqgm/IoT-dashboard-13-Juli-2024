@@ -309,7 +309,7 @@
       <td>${row.device_id}</td>
       <td>${row.current}</td>
       <td>${row.relay_status}</td>
-      <td>${row.timestamp}</td>
+      <td>${convertToLocalTime(row.timestamp)}</td>
     `;
     historyTable.appendChild(tr);
         // Set background color based on relay_status
@@ -362,6 +362,39 @@
         currentChart.data = parsedData;
         currentChart.update();
       }
+
+      // Fungsi log waktu UTC+7 (WIB)
+      const logDateNow = () => {
+        const date = new Date();
+        const utcOffset = 7 * 60 * 60 * 1000; // UTC+7 (WIB)
+        const indonesiaTime = new Date(date.getTime() + utcOffset);
+        console.log("Current Date and Time (WIB):", indonesiaTime.toISOString().replace("T", " ").split(".")[0]);
+      };
+
+      // Memanggil fungsi log date secara berkala
+      setInterval(logDateNow, 1000); // Setiap 1 detik
+
+      function convertToLocalTime(utcTime) {
+        const date = new Date(utcTime);
+        const options = {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          timeZone: 'Asia/Jakarta',
+        };
+
+        // Mengonversi waktu ke WIB
+        const formattedDate = date.toLocaleString('id-ID', options);
+        
+        // Mendapatkan milidetik secara manual
+        const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
+
+        // Menggabungkan hasil dengan milidetik
+        return `${formattedDate}:${milliseconds}`;
+}
 
       // Fetch history data periodically
       setInterval(() => {

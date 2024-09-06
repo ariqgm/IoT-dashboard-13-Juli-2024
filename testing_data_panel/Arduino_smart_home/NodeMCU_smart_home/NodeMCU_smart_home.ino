@@ -107,15 +107,8 @@ void reconnect() {
 }
 
 void publishStatus() {
-  String payload = "{";
-  payload += "\"id\": \"ESP8266Client\",";
-  payload += "\"room_lock_status\": \"" + roomLockStatus + "\",";
-  payload += "\"main_lock_status\": \"" + mainLockStatus + "\",";
-  payload += "\"dimmer_value\": " + String(dimmerValue) + ",";
-  payload += "\"ldr_value\": " + String(ldrValue) + ",";
-  payload += "\"mq2_value\": " + String(mq2Value) + ",";
-  payload += "\"lamp_status\": \"" + lampStatus + "\"";
-  payload += "}";
+
+
 
   Serial.print("Publishing message: ");
   Serial.println(payload);
