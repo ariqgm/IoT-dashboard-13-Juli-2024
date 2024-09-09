@@ -62,6 +62,12 @@
       color: #FFF8F3;
       text-align: center;
     }
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: #F7E7DC;
+    }
+    .table-striped tbody tr:nth-of-type(even) {
+      background-color: #FFF8F3;
+    }
     .table-responsive {
       max-height: 400px; 
       overflow-y: scroll;
@@ -83,25 +89,6 @@
       font-size: 1.2em;
       display: inline-block;
       float: right;
-    }
-    .relay-normal-bg {
-      background-color: green !important;
-      color: white !important; /* Menjamin teks terlihat */
-    }
-
-    .relay-warning-bg {
-      background-color: #f4ce14 !important;
-      color: black !important; /* Menjamin teks terlihat */
-    }
-
-    .relay-overload-bg {
-      background-color: darkorange !important;
-      color: white !important; /* Menjamin teks terlihat */
-    }
-
-    .relay-trip-overload-bg {
-      background-color: red !important;
-      color: white !important; /* Menjamin teks terlihat */
     }
   </style>
 </head>
@@ -160,7 +147,7 @@
           <div class="card-header text-center">Data History</div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table">
+              <table class="table table-striped">
                 <thead>
                   <tr>
                     <th scope="col">Device ID</th>
@@ -284,13 +271,13 @@
             case 'NORMAL':
               relayStatusBox.className = 'relay-status relay-normal';
               break;
-            case 'WARNING_OVERLOAD':
+            case 'WARNING (OVERLOAD)':
               relayStatusBox.className = 'relay-status relay-warning';
               break;
             case 'OVERLOAD':
               relayStatusBox.className = 'relay-status relay-overload';
               break;
-            case 'TRIP_OVERLOAD':
+            case 'TRIP OVERLOAD':
               relayStatusBox.className = 'relay-status relay-trip-overload';
               break;
             default:
@@ -300,37 +287,19 @@
       });
 
       socket.on('requesthistoryProteksiData', function(data) {
-  const historyTable = document.getElementById('historyData');
-  historyTable.innerHTML = ''; // Clear existing data
-  data.forEach(row => {
-    const tr = document.createElement('tr');
-    tr.dataset.relayStatus = row.relay_status;
-    tr.innerHTML = `
-      <td>${row.device_id}</td>
-      <td>${row.current}</td>
-      <td>${row.relay_status}</td>
-      <td>${convertToLocalTime(row.timestamp)}</td>
-    `;
-    historyTable.appendChild(tr);
-        // Set background color based on relay_status
-        switch(tr.dataset.relayStatus) {
-      case 'NORMAL':
-        tr.classList.add('relay-normal-bg');
-        break;
-      case 'WARNING_OVERLOAD':
-        tr.classList.add('relay-warning-bg');
-        break;
-      case 'OVERLOAD':
-        tr.classList.add('relay-overload-bg');
-        break;
-      case 'TRIP_OVERLOAD':
-        tr.classList.add('relay-trip-overload-bg');
-        break;
-      default:
-        tr.classList.add('relay-normal-bg'); // Default case, for safety
-    }
-  });
-});
+        const historyTable = document.getElementById('historyData');
+        historyTable.innerHTML = ''; // Clear existing data
+        data.forEach(row => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${row.device_id}</td>
+            <td>${row.current}</td>
+            <td>${row.relay_status}</td>
+            <td>${row.timestamp}</td>
+          `;
+          historyTable.appendChild(tr);
+        });
+      });
 
       socket.on('disconnect', () => {
         console.log('Disconnected from socket.io server');
@@ -362,39 +331,6 @@
         currentChart.data = parsedData;
         currentChart.update();
       }
-
-      // Fungsi log waktu UTC+7 (WIB)
-      const logDateNow = () => {
-        const date = new Date();
-        const utcOffset = 7 * 60 * 60 * 1000; // UTC+7 (WIB)
-        const indonesiaTime = new Date(date.getTime() + utcOffset);
-        console.log("Current Date and Time (WIB):", indonesiaTime.toISOString().replace("T", " ").split(".")[0]);
-      };
-
-      // Memanggil fungsi log date secara berkala
-      setInterval(logDateNow, 1000); // Setiap 1 detik
-
-      function convertToLocalTime(utcTime) {
-        const date = new Date(utcTime);
-        const options = {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          timeZone: 'Asia/Jakarta',
-        };
-
-        // Mengonversi waktu ke WIB
-        const formattedDate = date.toLocaleString('id-ID', options);
-        
-        // Mendapatkan milidetik secara manual
-        const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
-
-        // Menggabungkan hasil dengan milidetik
-        return `${formattedDate}:${milliseconds}`;
-}
 
       // Fetch history data periodically
       setInterval(() => {

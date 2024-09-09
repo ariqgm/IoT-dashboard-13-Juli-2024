@@ -40,7 +40,7 @@
   let lampStatus = false;
 
   // Konfigurasi MQTT
-  const mqttClient = mqtt.connect('mqtt://192.168.42.106:1883', {
+  const mqttClient = mqtt.connect('mqtt://192.168.1.2:1883', {
     username: 'ariq',
     password: '1234'
   });
@@ -163,7 +163,7 @@
     sendhistoryProteksiData();
     sendhistoryStatusListrikData();
     senddata15menit();
- 
+
     socket.on('requesthistorySmarthomeData', sendhistorySmarthomeData);
     socket.on('requesthistoryProteksiData', sendhistoryProteksiData);
     socket.on('requesthistoryStatusListrikData', sendhistoryStatusListrikData);
